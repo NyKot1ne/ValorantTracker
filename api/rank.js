@@ -4,32 +4,28 @@ export default async function handler(req, res) {
   const region = "eu";
 
   try {
-    const response = await fetch(
-      `https://api.henrikdev.xyz/valorant/v1/mmr/${region}/${name}/${tag}`,
-      {
-        headers: {
-          Authorization: "none",
-        },
-      }
-    );
+    const response = await fetch(`https://api.henrikdev.xyz/valorant/v2/mmr/${region}/${name}/${tag}`);
 
     if (!response.ok) {
-      return res.status(404).send("Impossible de récupérer le rang.");
+      return res.status(404).send("Impossible de récupérer le rang depuis l'API HenrikDev.");
     }
 
-    const data = await response.json();
-
-    const current = data.data.current_data;
-    const highest = data.data.highest_rank;
+    const json = await response.json();
+    const current = json.data?.current_data;
+    const highest = json.data?.highest_rank;
 
     if (!current) {
-      return res.status(404).send("Aucune donnée disponible.");
+      return res.status(404).send("Aucune donnée de rang disponible.");
     }
 
     const rank = current.currenttierpatched || "Non classé";
     const rr = current.ranking_in_tier ?? 0;
     const peak = highest?.patched_tier || "Aucun peak";
 
-    res.status(200).send(`LA BETE DE FOIRE est ${rank} (${rr} RR) | Peak : ${peak}`);
+    res.setHeader("Content-Type", "text/plain; charset=utf-8");
+    return res.status(200).send(`Rank : ${rank} ${rr} RR | Peak : ${peak}`);
   } catch (error) {
-    console.error("Erreur AP
+    console.error(error);
+    return res.status(500).send("Erreur interne : " + error.message);
+  }
+}
