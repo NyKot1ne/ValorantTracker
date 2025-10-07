@@ -1,2 +1,0 @@
-# ValorantTracker
-Api for twitch
