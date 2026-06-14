@@ -1,0 +1,3 @@
+name = "valorant-rank"
+main = "index.js"
+compatibility_date = "2026-06-14"
