@@ -1,8 +1,4 @@
 {
-  "name": "valorant-rank-api",
-  "version": "1.0.0",
-  "main": "index.js",
-  "dependencies": {
-    "express": "^4.21.2"
-  }
+  "name": "valorant-tracker",
+  "version": "1.0.0"
 }
